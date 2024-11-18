@@ -2,23 +2,21 @@
 //  ContentView.swift
 //  System Information
 //
-//  Created by Chris on 11/18/24.
-//
 
 import SwiftUI
 
 struct ContentView: View {
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        ZStack {
+            
         }
-        .padding()
+        .toolbar(removing: .title)
+        .toolbarBackground(.hidden, for: .windowToolbar)
+        .containerBackground(.ultraThinMaterial, for: .window)
     }
 }
 
 #Preview {
     ContentView()
+        .frame(width: 280, height: 455)
 }
