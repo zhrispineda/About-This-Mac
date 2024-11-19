@@ -12,6 +12,7 @@ struct System_InformationApp: App {
             ContentView()
                 .fixedSize()
                 .frame(width: 280, height: 455)
+                .handlesExternalEvents(preferring: ["systemprofiler"], allowing: ["*"])
                 .onReceive(NotificationCenter.default.publisher(for: NSWindow.didBecomeKeyNotification)) { notif in
                     if let window = notif.object as? NSWindow {
                         window.standardWindowButton(.miniaturizeButton)?.isEnabled = false

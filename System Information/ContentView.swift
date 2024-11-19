@@ -3,6 +3,7 @@
 //  System Information
 //
 
+import Foundation
 import SwiftUI
 
 struct ContentView: View {
@@ -12,6 +13,9 @@ struct ContentView: View {
         let fileURL = URL(fileURLWithPath: iconPath)
         return NSImage(contentsOf: fileURL)
     }
+    let table = "SPInfo"
+    let macInfo = MacInfo()
+    @State private var expanded = false
     
     var body: some View {
         ZStack {
@@ -26,32 +30,32 @@ struct ContentView: View {
             VStack(spacing: 2.5) {
                 Spacer()
                     .frame(height: 174)
-                Text("UNKNOWN")
+                Text(macInfo.model().name)
                     .font(.title)
                     .fontWeight(.bold)
                     .foregroundStyle(.primary.opacity(0.8))
-                Text("UNKNOWN")
+                Text(macInfo.model().year)
                     .font(.caption)
                     .foregroundStyle(.tertiary)
                 Spacer()
                     .frame(height: 15)
-                InfoLabel(title: "CHIP_LABEL", subtitle: "UNKNOWN")
-                InfoLabel(title: "MEMORY_LABEL", subtitle: "UNKNOWN")
-                InfoLabel(title: "SERIAL_LABEL", subtitle: "UNKNOWN")
-                InfoLabel(title: "OS_LABEL", subtitle: "UNKNOWN")
+                InfoLabel(title: "CHIP_LABEL".localize(table: table), subtitle: MGHelper.read(key: "Z06ZMtQY6G3kKrC7fs/gOA") ?? "UNKNOWN".localize(table: table))
+                InfoLabel(title: "MEMORY_LABEL".localize(table: table), subtitle: "MEM_GIGABYTE_FORMAT".localize(table: table, MacInfo.memory))
+                InfoLabel(title: "SERIAL_LABEL".localize(table: table), subtitle: MGHelper.read(key: "VasUgeSzVyHdB27g2XpN0g") ?? "UNKNOWN".localize(table: table))
+                InfoLabel(title: "OS_LABEL".localize(table: table), subtitle: expanded ? macInfo.system().build : "[\(macInfo.system().version)](systemprofiler://)")
                 Spacer()
                     .frame(height: 15)
-                Link("MORE_INFO_BUTTON", destination: URL(string: "x-apple.systempreferences:com.apple.SystemProfiler.AboutExtension")!)
+                Link("MORE_INFO_BUTTON".localize(table: table), destination: URL(string: "x-apple.systempreferences:com.apple.SystemProfiler.AboutExtension")!)
                     .buttonStyle(.bordered)
                 Spacer()
                     .frame(height: 8)
                 Group {
-                    Button("REGULATORY_LABEL") {
+                    Button("REGULATORY_LABEL".localize(table: table)) {
                         
                     }
                     .buttonStyle(.plain)
                     .underline()
-                    Text("COPYRIGHT_LABEL")
+                    Text("COPYRIGHT_LABEL".localize(table: table, "1983-2024 Apple Inc."))
                         .multilineTextAlignment(.center)
                 }
                 .foregroundStyle(.tertiary)
@@ -64,6 +68,11 @@ struct ContentView: View {
         .gesture(WindowDragGesture())
         .toolbar(removing: .title)
         .toolbarBackground(.hidden, for: .windowToolbar)
+        .onOpenURL { url in // Replace text value for OS label subtitle when text is clicked
+            if url.absoluteString == "systemprofiler://" {
+                expanded = true
+            }
+        }
     }
 }
 
