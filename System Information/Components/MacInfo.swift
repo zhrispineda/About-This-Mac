@@ -30,7 +30,7 @@ class MacInfo {
             
             return (name: modelNameString, year: modelYearString)
         }
-        return (name: "UNKNOWN", year: "UNKNOWN")
+        return (name: "UNKNOWN".localize(table: "SPInfo"), year: "UNKNOWN".localize(table: "SPInfo"))
     }
     
     // Use regular expression to get and format OS information from operatingSystemVersionString
