@@ -8,18 +8,26 @@ import SwiftUI
 
 struct ContentView: View {
     // Variables
-    var iconPath = "/System/Library/CoreServices/CoreTypes.bundle/Contents/Library/CoreTypes-0013.bundle/Contents/Resources/com.apple.macbookpro-16-late-2023-2-space-black.icns"
-    var iconImage: NSImage? {
-        let fileURL = URL(fileURLWithPath: iconPath)
-        return NSImage(contentsOf: fileURL)
-    }
     let table = "SPInfo"
     let macInfo = MacInfo()
     @State private var expanded = false
     
     var body: some View {
         ZStack {
-            if let iconImage = iconImage {
+            if let iconImage = macInfo.color() {
+//                Rectangle()
+//                    .fill(
+//                        LinearGradient(
+//                            gradient: Gradient(colors: [
+//                                Color(red: 80/255, green: 139/255, blue: 199/255),
+//                                Color(red: 114/255, green: 176/255, blue: 239/255)
+//                            ]),
+//                            startPoint: .top,
+//                            endPoint: .bottom
+//                        )
+//                    )
+//                    .frame(width: 145, height: 95)
+//                    .offset(y: -125)
                 Image(nsImage: iconImage)
                     .resizable()
                     .scaledToFit()
@@ -41,6 +49,7 @@ struct ContentView: View {
                     .frame(height: 15)
                 InfoLabel(title: "CHIP_LABEL".localize(table: table), subtitle: MGHelper.read(key: "Z06ZMtQY6G3kKrC7fs/gOA") ?? "UNKNOWN".localize(table: table))
                 InfoLabel(title: "MEMORY_LABEL".localize(table: table), subtitle: "MEM_GIGABYTE_FORMAT".localize(table: table, MacInfo.memory))
+                //InfoLabel(title: "BOOT_DISK_LABEL".localize(table: table), subtitle: "Macintosh HD")
                 InfoLabel(title: "SERIAL_LABEL".localize(table: table), subtitle: MGHelper.read(key: "VasUgeSzVyHdB27g2XpN0g") ?? "UNKNOWN".localize(table: table))
                 InfoLabel(title: "OS_LABEL".localize(table: table), subtitle: expanded ? macInfo.system().build : "[\(macInfo.system().version)](systemprofiler://)")
                 Spacer()
@@ -51,7 +60,7 @@ struct ContentView: View {
                     .frame(height: 8)
                 Group {
                     Button("REGULATORY_LABEL".localize(table: table)) {
-                        
+                        macInfo.regulatoryFile()
                     }
                     .buttonStyle(.plain)
                     .underline()
@@ -69,7 +78,7 @@ struct ContentView: View {
         .toolbar(removing: .title)
         .toolbarBackground(.hidden, for: .windowToolbar)
         .onOpenURL { url in // Replace text value for OS label subtitle when text is clicked
-            if url.absoluteString == "systemprofiler://" {
+            if url.scheme == "systemprofiler" {
                 expanded = true
             }
         }

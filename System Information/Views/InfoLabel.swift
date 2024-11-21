@@ -27,7 +27,7 @@ struct InfoLabel: View {
         .font(.subheadline)
         .offset(x: -12)
         .onOpenURL { url in // Expand frame width for OS label value when text is clicked
-            if url.absoluteString == "systemprofiler://" {
+            if url.scheme == "systemprofiler" {
                 expanded = true
             }
         }
