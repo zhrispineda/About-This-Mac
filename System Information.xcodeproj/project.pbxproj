@@ -21,6 +21,11 @@
 			path = "System Information";
 			sourceTree = "<group>";
 		};
+		83EE40322D00D02B00161B92 /* Assets */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Assets;
+			sourceTree = "<group>";
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -37,6 +42,7 @@
 		832EB1262CEBE74800F2A7C5 = {
 			isa = PBXGroup;
 			children = (
+				83EE40322D00D02B00161B92 /* Assets */,
 				83267BE12CED33DD003B6F89 /* README.md */,
 				832EB1312CEBE74800F2A7C5 /* System Information */,
 				832EB1302CEBE74800F2A7C5 /* Products */,
@@ -68,6 +74,7 @@
 			);
 			fileSystemSynchronizedGroups = (
 				832EB1312CEBE74800F2A7C5 /* System Information */,
+				83EE40322D00D02B00161B92 /* Assets */,
 			);
 			name = "System Information";
 			packageProductDependencies = (

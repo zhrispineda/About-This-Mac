@@ -2,7 +2,10 @@
 A SwiftUI recreation of the macOS About This Mac window.
 
 ## Information
-- This personal project is a recreation of System Information‘s About This Mac window on Apple‘s macOS.
+- This personal project is a recreation of System Information‘s About This Mac window in macOS.
+
+## Preview
+![An image of the About This Mac window from the project which is similar to the one found in macOS.](Assets/AboutThisMac.png)
 
 ## Usage
 Open the project in Xcode and run. The project should be able to sign to run locally without a provisioning profile.
