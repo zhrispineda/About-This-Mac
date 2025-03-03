@@ -53,7 +53,10 @@ struct ContentView: View {
                 InfoLabel(title: "CHIP_LABEL".localize(table: table), subtitle: MGHelper.read(key: "Z06ZMtQY6G3kKrC7fs/gOA") ?? "UNKNOWN".localize(table: table))
                 // Memory
                 InfoLabel(title: "MEMORY_LABEL".localize(table: table), subtitle: "MEM_GIGABYTE_FORMAT".localize(table: table, MacInfo.memory))
-                //InfoLabel(title: "BOOT_DISK_LABEL".localize(table: table), subtitle: "Macintosh HD")
+                // Startup disk
+                if macInfo.drives().count > 1 {
+                    InfoLabel(title: "BOOT_DISK_LABEL".localize(table: table), subtitle: macInfo.drives().name)
+                }
                 // Serial Number
                 InfoLabel(title: "SERIAL_LABEL".localize(table: table), subtitle: MGHelper.read(key: "VasUgeSzVyHdB27g2XpN0g") ?? "UNKNOWN".localize(table: table))
                 // macOS

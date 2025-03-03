@@ -8,7 +8,6 @@ import SwiftUI
 struct InfoLabel: View {
     var title = String()
     var subtitle = String()
-    @State private var expanded = false
     
     var body: some View {
         HStack {

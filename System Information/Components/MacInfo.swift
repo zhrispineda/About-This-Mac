@@ -8,6 +8,8 @@ import AppKit
 import os
 
 class MacInfo {
+    let fileManager = FileManager.default
+    let resourceKeys: [URLResourceKey] = [.volumeNameKey]
     let logger = Logger()
     
     // Use ProcessInfo to get memory in GB
@@ -138,5 +140,21 @@ class MacInfo {
         }
         
         return (name: systemName, version: String(splitString[1]), build: String(splitString[3]), subtext: "\(betaBuild ? "OS_BETA_VERSION_BUILD" : "OS_VERSION_BUILD")".localize(table: "SPInfo", String(splitString[1]), String(splitString[3])))
+    }
+    
+    // Check name and count of drives
+    func drives() -> (name: String, count: Int) {
+        var drives: [String] = []
+        
+        if let volumes = fileManager.mountedVolumeURLs(includingResourceValuesForKeys: resourceKeys, options: .skipHiddenVolumes) {
+            for volume in volumes {
+                if let resources = try? volume.resourceValues(forKeys: Set(resourceKeys)),
+                   let name = resources.volumeName {
+                    drives.append(name)
+                }
+            }
+        }
+        
+        return (name: drives[0], count: drives.count)
     }
 }
