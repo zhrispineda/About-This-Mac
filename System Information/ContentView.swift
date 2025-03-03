@@ -8,9 +8,9 @@ import SwiftUI
 
 struct ContentView: View {
     // Variables
-    let table = "SPInfo"
-    let macInfo = MacInfo()
     @State private var expanded = false
+    let macInfo = MacInfo()
+    let table = "SPInfo"
     
     var body: some View {
         ZStack {
@@ -45,26 +45,39 @@ struct ContentView: View {
                 Text(macInfo.model().year)
                     .font(.caption)
                     .foregroundStyle(.tertiary)
+                
                 Spacer()
                     .frame(height: 15)
+                
+                // Chip
                 InfoLabel(title: "CHIP_LABEL".localize(table: table), subtitle: MGHelper.read(key: "Z06ZMtQY6G3kKrC7fs/gOA") ?? "UNKNOWN".localize(table: table))
+                // Memory
                 InfoLabel(title: "MEMORY_LABEL".localize(table: table), subtitle: "MEM_GIGABYTE_FORMAT".localize(table: table, MacInfo.memory))
                 //InfoLabel(title: "BOOT_DISK_LABEL".localize(table: table), subtitle: "Macintosh HD")
+                // Serial Number
                 InfoLabel(title: "SERIAL_LABEL".localize(table: table), subtitle: MGHelper.read(key: "VasUgeSzVyHdB27g2XpN0g") ?? "UNKNOWN".localize(table: table))
-                InfoLabel(title: "OS_LABEL".localize(table: table), subtitle: expanded ? macInfo.system().build : "[\(macInfo.system().version)](systemprofiler://)")
+                // macOS
+                InfoLabel(title: "OS_LABEL".localize(table: table), subtitle: expanded ? macInfo.system().subtext : "[\(macInfo.system().name) \(macInfo.system().version)](systemprofiler://)")
+                
                 Spacer()
                     .frame(height: 15)
+                
+                // More Info...
                 Link("MORE_INFO_BUTTON".localize(table: table), destination: URL(string: "x-apple.systempreferences:com.apple.SystemProfiler.AboutExtension")!)
                     .buttonStyle(.bordered)
+                
                 Spacer()
                     .frame(height: 8)
+                
                 Group {
+                    // Regulatory Certification
                     Button("REGULATORY_LABEL".localize(table: table)) {
                         macInfo.regulatoryFile()
                     }
                     .buttonStyle(.plain)
                     .underline()
-                    Text("COPYRIGHT_LABEL".localize(table: table, "1983-2024 Apple Inc."))
+                    // Copyright
+                    Text("COPYRIGHT_LABEL".localize(table: table, "1983-2025 Apple Inc."))
                         .multilineTextAlignment(.center)
                 }
                 .foregroundStyle(.tertiary)

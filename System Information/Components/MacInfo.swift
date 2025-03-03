@@ -21,7 +21,7 @@ class MacInfo {
     func regulatoryFile() -> Void {
         let regulatoryModelNumber = MGHelper.read(key: "97JDvERpVwO+GHtthIh7hA") // RegulatoryModelNumber
         let targetSubType = MGHelper.read(key: "oYicEKzVTz4/CxxE05pEgQ")?.dropLast(2) // TargetSubType
-        let fileURL = "/System/Library/ProductDocuments/RegulatoryCertifications/RegulatoryCertification-\(regulatoryModelNumber ?? "A2485")-\(targetSubType ?? "J316s").lpdf"
+        let fileURL = "/System/Library/ProductDocuments/RegulatoryCertifications/RegulatoryCertification-\(regulatoryModelNumber ?? "A2485")-\(targetSubType ?? "J316s")-CHN.lpdf"
         
         if NSWorkspace.shared.open(URL(fileURLWithPath: fileURL)) {
             logger.log("Successfully opened Regulatory Certification: \(fileURL)")
@@ -118,39 +118,25 @@ class MacInfo {
     }
     
     // Use regular expression to get and format OS information from operatingSystemVersionString
-    func system() -> (version: String, build: String) {
+    func system() -> (name: String, version: String, build: String, subtext: String) {
+        let pattern = "[^A-Za-z0-9.]+"
         let fullString = ProcessInfo.processInfo.operatingSystemVersionString
-        let pattern = "Version (\\d+\\.\\d+) \\(Build ([A-Za-z0-9]+)\\)"
+        let regexString = fullString.replacingOccurrences(of: pattern, with: " ", options: [.regularExpression])
+        let splitString = regexString.split(separator: " ")
+        let betaBuild = splitString[3].last!.isLetter
+        var systemName = String()
         
-        if let regex = try? NSRegularExpression(pattern: pattern, options: []) {
-            let range = NSRange(fullString.startIndex..<fullString.endIndex, in: fullString)
-            
-            if let match = regex.firstMatch(in: fullString, options: [], range: range) {
-                let versionRange = match.range(at: 1)
-                let buildRange = match.range(at: 2)
-                
-                if let version = Range(versionRange, in: fullString),
-                   let build = Range(buildRange, in: fullString) {
-                    let versionString = fullString[version]
-                    let buildString = fullString[build]
-                    let buildSuffix = buildString.last
-                    var systemName = String()
-                    
-                    switch versionString.prefix(2) {
-                    case "15":
-                        systemName = "Sequoia"
-                    case "14":
-                        systemName = "Sonoma"
-                    case "13":
-                        systemName = "Ventura"
-                    default:
-                        systemName = "UNKNOWN"
-                    }
-                    
-                    return (version: "\(systemName) \(versionString)", build: "\(versionString) \(buildSuffix?.isLetter ?? false ? "Beta (\(buildString))" : "(\(buildString))")")
-                }
-            }
+        switch splitString[1].prefix(2) {
+        case "15":
+            systemName = "Sequoia"
+        case "14":
+            systemName = "Sonoma"
+        case "13":
+            systemName = "Ventura"
+        default:
+            systemName = "UNKNOWN"
         }
-        return (version: "UNKNOWN", build: "UNKNOWN")
+        
+        return (name: systemName, version: String(splitString[1]), build: String(splitString[3]), subtext: "\(betaBuild ? "OS_BETA_VERSION_BUILD" : "OS_VERSION_BUILD")".localize(table: "SPInfo", String(splitString[1]), String(splitString[3])))
     }
 }
