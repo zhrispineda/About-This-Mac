@@ -138,7 +138,7 @@ class MacInfo {
         case "13":
             systemName = "Ventura"
         default:
-            systemName = "UNKNOWN"
+            systemName = ""
         }
         
         return (name: systemName, version: String(splitString[1]), build: String(splitString[3]), subtext: "\(betaBuild ? "OS_BETA_VERSION_BUILD" : "OS_VERSION_BUILD")".localize(table: "SPInfo", String(splitString[1]), String(splitString[3])))

@@ -9,8 +9,12 @@ import SwiftUI
 struct ContentView: View {
     // Variables
     @State private var expanded = false
-    let macInfo = MacInfo()
-    let table = "SPInfo"
+    private let macInfo = MacInfo()
+    private let table = "SPInfo"
+    private var versionText: String {
+        let system = macInfo.system()
+        return system.name.isEmpty ? system.version : "\(system.name) \(system.version)"
+    }
     
     var body: some View {
         ZStack {
@@ -60,7 +64,10 @@ struct ContentView: View {
                 // Serial Number
                 InfoLabel(title: "SERIAL_LABEL".localize(table: table), subtitle: MGHelper.read(key: "VasUgeSzVyHdB27g2XpN0g") ?? "UNKNOWN".localize(table: table))
                 // macOS
-                InfoLabel(title: "OS_LABEL".localize(table: table), subtitle: expanded ? macInfo.system().subtext : "[\(macInfo.system().name) \(macInfo.system().version)](systemprofiler://)")
+                InfoLabel(
+                    title: "OS_LABEL".localize(table: table),
+                    subtitle: expanded ? macInfo.system().subtext : "[\(versionText)](systemprofiler://)"
+                )
                 
                 Spacer()
                     .frame(height: 15)
