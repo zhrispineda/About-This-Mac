@@ -129,6 +129,8 @@ class MacInfo {
         var systemName = String()
         
         switch splitString[1].prefix(2) {
+        case "27":
+            systemName = "Golden Gate"
         case "26":
             systemName = "Tahoe"
         case "15":
